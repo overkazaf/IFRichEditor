@@ -1,0 +1,46 @@
+{
+  "name": "if-rich-editor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "draft-js": "^0.10.4",
+    "draft-js-alignment-plugin": "^2.0.0-beta1",
+    "draft-js-buttons": "^2.0.0-beta6",
+    "draft-js-drag-n-drop-plugin": "^2.0.0-beta10",
+    "draft-js-focus-plugin": "^2.0.0-rc9",
+    "draft-js-image-plugin": "^2.0.0-rc8",
+    "draft-js-inline-toolbar-plugin": "^2.0.0-rc8",
+    "draft-js-plugins-editor": "^2.0.0-rc8",
+    "draft-js-resizeable-plugin": "^1.0.8",
+    "draft-js-side-toolbar-plugin": "^2.0.0-rc8",
+    "gulp": "^3.9.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "webpack": "^3.8.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "json-loader": "^0.5.7",
+    "open": "0.0.5",
+    "postcss": "^6.0.13",
+    "react-hot-loader": "^3.1.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "webpack-dev-server": "^2.9.3",
+    "webpack-module-hot-accept": "^1.0.5"
+  }
+}
