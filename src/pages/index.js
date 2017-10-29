@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-
 import CustomInlineToolbarEditor from '../components/IFRichEditor/index';
-
-import rootStyle from './index.css';
+import rootStyles from './index.css';
 
 export default 
 class Root extends Component {
@@ -12,9 +10,8 @@ class Root extends Component {
 	render() {
 		return (
 		  <div>
-		  	<style dangerouslySetInnerHTML={{ __html: rootStyle }} />
-		  	<div className="root">
-			  <div style={{ margin: 120 }}>
+		  	<div className={rootStyles.root}>
+			  <div className={rootStyles.editorContainer}>
 			  	<CustomInlineToolbarEditor />
 			  </div>
 			</div>

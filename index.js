@@ -8,8 +8,6 @@ function render() {
 		<APP />, 
 		document.getElementById('app')
 	);
-
-	console.log('rendered');
 }
 
 setTimeout(render, 16);

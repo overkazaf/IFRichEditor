@@ -7,6 +7,10 @@
   margin-bottom: 2em;
   box-shadow: inset 0px 1px 8px -3px #ABABAB;
   background: #fefefe;
+
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .editor :global(.public-DraftEditor-content) {
@@ -21,13 +25,11 @@
   background: #fbfbfb;
   color: #888;
   font-size: 18px;
-  border: none;
-  outline: none;
+  border: 0;
   padding-top: 5px;
   vertical-align: bottom;
   height: 34px;
   width: 36px;
-
 }
 
 .headlineButton:hover,

@@ -27,30 +27,37 @@ const webpackConfig = {
 		  loaders: ['babel-loader?presets[]=es2015&presets[]=react&presets[]=stage-0&presets[]=stage-1', 'webpack-module-hot-accept'],
 		  exclude: /node_modules/
 		},
+    {
+        test: /plugin\.css$/,
+        loaders: [
+          'style-loader', 'css-loader',
+        ],
+      },
 		{
-      test: /plugin\.css$/,
-      loaders: [
-        'style-loader', 'css',
-      ],
+      test: /\.css$/,
+      exclude: /node_modules/,
+      use: ['style-loader', {
+        loader: 'css-loader',
+          options: {
+          modules: true,//让css-loader支持Css Modules。
+        },
+      }]
     }
     ]
   },
   
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin('[name].css', {
-      allChunks : true
-    }),
     new HtmlWebpackPlugin({
-	  template : path.join(__dirname, 'index.html'),
-	  hash     : false,
-	  // favicon  : project.paths.public('favicon.ico'),
-	  filename : 'index.html',
-	  inject   : 'body',
-	  minify   : {
-	    collapseWhitespace : true
-	  }
-	}),
+  	  template : path.join(__dirname, 'index.html'),
+  	  hash     : false,
+  	  // favicon  : project.paths.public('favicon.ico'),
+  	  filename : 'index.html',
+  	  inject   : 'body',
+  	  minify   : {
+  	    collapseWhitespace : true
+  	  }
+  	}),
     new webpack.NoErrorsPlugin(),
   ]
 };

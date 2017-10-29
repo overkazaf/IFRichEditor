@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
 
-import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
+import Editor, { createEditorStateWithText, composeDecorators } from 'draft-js-plugins-editor';
 
 import createInlineToolbarPlugin, { Separator } from 'draft-js-inline-toolbar-plugin';
+import createImagePlugin from 'draft-js-image-plugin';
+import createLinkPlugin from 'draft-js-anchor-plugin';
+import createUndoPlugin from 'draft-js-undo-plugin';
+
+
+
+import createFocusPlugin from 'draft-js-focus-plugin';
+import createBlockDndPlugin from 'draft-js-drag-n-drop-plugin';
+import createResizeablePlugin from 'draft-js-resizeable-plugin';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+
+import createAlignmentPlugin from 'draft-js-alignment-plugin';
+
+
 import {
   ItalicButton,
   BoldButton,
@@ -14,55 +28,63 @@ import {
   UnorderedListButton,
   OrderedListButton,
   BlockquoteButton,
-  CodeBlockButton,
 } from 'draft-js-buttons';
 import editorStyles from './editorStyles.css';
-import pluginStyle from 'draft-js-inline-toolbar-plugin/lib/plugin.css';
+import linkStyles from './linkStyles.css';
+import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
+import 'draft-js-alignment-plugin/lib/plugin.css';
+import 'draft-js-undo-plugin/lib/plugin.css';
+import 'draft-js-image-plugin/lib/plugin.css';
+import 'draft-js-linkify-plugin/lib/plugin.css';
+import 'draft-js-emoji-plugin/lib/plugin.css';
 
 
-class HeadlinesPicker extends Component {
-  componentDidMount() {
-    setTimeout(() => { window.addEventListener('click', this.onWindowClick); });
+
+import ImageAdd from './ImageAdd';
+
+class ImageButton extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      editorState: props.editorState,
+    }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('click', this.onWindowClick);
+  onChange = (editorState) => {
+    this.props.onChange(editorState);
   }
-
-  onWindowClick = () =>
-    // Call `onOverrideContent` again with `undefined`
-    // so the toolbar can show its regular content again.
-    this.props.onOverrideContent(undefined);
-
-  render() {
-    const buttons = [HeadlineOneButton, HeadlineTwoButton, HeadlineThreeButton];
-    return (
-      <div>
-        {buttons.map((Button, i) => // eslint-disable-next-line
-          <Button key={i} {...this.props} />
-        )}
-      </div>
-    );
-  }
-}
-
-class HeadlinesButton extends Component {
-  onClick = () =>
-    // A button can call `onOverrideContent` to replace the content
-    // of the toolbar. This can be useful for displaying sub
-    // menus or requesting additional information from the user.
-    this.props.onOverrideContent(HeadlinesPicker);
 
   render() {
     return (
-      <div className={editorStyles.headlineButtonWrapper}>
-        <button onClick={this.onClick} className={editorStyles.headlineButton}>
-          H
-        </button>
-      </div>
-    );
+      <ImageAdd 
+        editorState={this.state.editorState}
+        onChange={this.onChange}
+        modifier={imagePlugin.addImage}
+      />
+    )
   }
 }
+
+
+const linkPlugin = createLinkPlugin({
+  theme: linkStyles,
+  placeholder: '请输入链接地址'
+});
+
+const focusPlugin = createFocusPlugin();
+const resizeablePlugin = createResizeablePlugin();
+const blockDndPlugin = createBlockDndPlugin();
+const alignmentPlugin = createAlignmentPlugin();
+const { AlignmentTool } = alignmentPlugin;
+
+const decorator = composeDecorators(
+  resizeablePlugin.decorator,
+  alignmentPlugin.decorator,
+  focusPlugin.decorator,
+  blockDndPlugin.decorator,
+);
+const imagePlugin = createImagePlugin({ decorator });
 
 const inlineToolbarPlugin = createInlineToolbarPlugin({
   structure: [
@@ -71,15 +93,32 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
     UnderlineButton,
     CodeButton,
     Separator,
-    HeadlinesButton,
+    HeadlineOneButton, 
+    HeadlineTwoButton, 
+    HeadlineThreeButton,
+    Separator,
     UnorderedListButton,
     OrderedListButton,
     BlockquoteButton,
-    CodeBlockButton
+    Separator,
+    linkPlugin.LinkButton,
   ]
 });
+const linkifyPlugin = createLinkifyPlugin();
+const undoPlugin = createUndoPlugin();
+const { UndoButton, RedoButton } = undoPlugin;
 const { InlineToolbar } = inlineToolbarPlugin;
-const plugins = [inlineToolbarPlugin];
+const plugins = [
+  inlineToolbarPlugin, 
+  blockDndPlugin,
+  focusPlugin,
+  alignmentPlugin,
+  resizeablePlugin,
+  imagePlugin, 
+  linkPlugin, 
+  undoPlugin,
+  linkifyPlugin,
+];
 const text = 'In this editor a toolbar shows up once you select part of the text …';
 
 export default class CustomInlineToolbarEditor extends Component {
@@ -100,15 +139,24 @@ export default class CustomInlineToolbarEditor extends Component {
 
   render() {
     return (
-      <div className={editorStyles.editor} onClick={this.focus}>
-        <style dangerouslySetInnerHTML={{ __html: pluginStyle }} />
-        <Editor
-          editorState={this.state.editorState}
-          onChange={this.onChange}
-          plugins={plugins}
-          ref={(element) => { this.editor = element; }}
-        />
-        <InlineToolbar />
+      <div>
+        <div className={editorStyles.editor} onClick={this.focus}>
+          <Editor
+            editorState={this.state.editorState}
+            onChange={this.onChange}
+            plugins={plugins}
+            ref={(element) => { this.editor = element; }}
+          />
+          // <InlineToolbar />
+        </div>
+        <div>
+          <ImageAdd
+            editorState={this.state.editorState}
+            onChange={this.onChange}
+            modifier={imagePlugin.addImage}
+          />
+          <AlignmentTool />
+        </div>
       </div>
     );
   }
