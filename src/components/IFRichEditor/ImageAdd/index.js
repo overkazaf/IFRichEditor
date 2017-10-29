@@ -77,6 +77,7 @@ export default class ImageAdd extends Component {
         >
           <input
             type="text"
+            ref="imageUrl"
             placeholder="请添加有效的网络图片地址"
             className={styles.addImageInput}
             onChange={this.changeUrl}

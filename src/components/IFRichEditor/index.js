@@ -78,6 +78,8 @@ const blockDndPlugin = createBlockDndPlugin();
 const alignmentPlugin = createAlignmentPlugin();
 const { AlignmentTool } = alignmentPlugin;
 
+console.log('alignmentPlugin', alignmentPlugin);
+
 const decorator = composeDecorators(
   resizeablePlugin.decorator,
   alignmentPlugin.decorator,
@@ -85,6 +87,19 @@ const decorator = composeDecorators(
   blockDndPlugin.decorator,
 );
 const imagePlugin = createImagePlugin({ decorator });
+
+
+class AlignmentToolButton extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <AlignmentTool />
+    )
+  }
+}
 
 const inlineToolbarPlugin = createInlineToolbarPlugin({
   structure: [
@@ -102,6 +117,8 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
     BlockquoteButton,
     Separator,
     linkPlugin.LinkButton,
+    AlignmentToolButton,
+    Separator,
   ]
 });
 const linkifyPlugin = createLinkifyPlugin();
